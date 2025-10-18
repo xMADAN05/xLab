@@ -1,0 +1,49 @@
+trigger: none
+pr: none
+
+schedules:
+  - cron: "0 */6 * * *"
+    displayName: "Every 6 hours"
+    branches:
+      include:
+        - main
+    always: true
+
+variables:
+  - group: gitops-secrets
+
+stages:
+  - stage: Mirror
+    displayName: "Mirror Github Repos to ADO"
+    jobs:
+      - job: mirror_all
+        displayName: "Mirror All Repositories"
+        timeoutInMinutes: 20
+        strategy:
+          # maxParallel: 4
+          matrix:
+            applications:
+              sourceRepo: "github.com/xMADAN05/applications.git"
+              targetRepo: "http://home-pc/DefaultCollection/Infra/_git/applications"
+              repoName: "applications"
+
+            control:
+              sourceRepo: "github.com/xMADAN05/control.git"
+              targetRepo: "http://home-pc/DefaultCollection/Infra/_git/control"
+              repoName: "control"
+
+            infrastructure:
+              sourceRepo: "github.com/xMADAN05/infrastructure.git"
+              targetRepo: "http://home-pc/DefaultCollection/Infra/_git/infrastructure"
+              repoName: "infrastructure"
+
+            pipelines:
+              sourceRepo: "github.com/xMADAN05/pipelines.git"
+              targetRepo: "http://home-pc/DefaultCollection/Infra/_git/pipelines"
+              repoName: "pipelines"
+        steps:
+          - template: ../templates/mirror-template.yml
+            parameters:
+              sourceRepo: $(sourceRepo)
+              targetRepo: $(targetRepo)
+              repoName: $(repoName)

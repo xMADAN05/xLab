@@ -1,0 +1,21 @@
+ingressController:
+  enabled: true
+  installCRDs: true
+
+proxy:
+  type: ClusterIP
+  http:
+    enabled: true
+    servicePort: 80
+  tls:
+    enabled: true
+    servicePort: 443
+
+admin:
+  enabled: true
+  type: ClusterIP
+  http:
+    enabled: true
+    servicePort: 8001
+env:
+  database: "off"

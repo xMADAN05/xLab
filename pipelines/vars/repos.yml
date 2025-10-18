@@ -1,0 +1,16 @@
+repositories:
+- name: pipelines
+  source: https://github.com/xMADAN05/pipelines.git
+  target: http://home-pc/DefaultCollection/Infra/_git/pipelines
+
+- name: control
+  source: https://github.com/xMADAN05/control.git
+  target: http://home-pc/DefaultCollection/Infra/_git/control
+
+- name: applications
+  source: https://github.com/xMADAN05/applications.git
+  target: http://home-pc/DefaultCollection/Infra/_git/applications
+
+- name: infrastructure
+  source: https://github.com/xMADAN05/infrastructure.git
+  target: http://home-pc/DefaultCollection/Infra/_git/infrastructure

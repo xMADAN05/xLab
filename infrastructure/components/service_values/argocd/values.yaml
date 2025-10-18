@@ -1,0 +1,9 @@
+server:
+  service:
+    type: "NodePort"
+global:
+  image:
+    tag: "v3.1.8"
+
+dex:
+  enabled: false

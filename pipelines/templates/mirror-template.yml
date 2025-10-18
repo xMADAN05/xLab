@@ -1,0 +1,28 @@
+parameters:
+  - name: name
+    type: string
+  - name: sourceRepo
+    type: string
+  - name: targetRepo
+    type: string
+
+steps:
+  - checkout: none
+  - script: |
+      echo "=== Mirroring ${{ parameters.repoName }} ==="
+      git config --global user.name "ADO Mirror Bot"
+      git config --global user.email "mirror-bot@yourorg.local"
+
+      echo "Cloning from GitHub..."
+      git clone --mirror https://xMADAN05:$(GITHUB_PAT)@${{ parameters.sourceRepo }} mirror-repo
+      cd mirror-repo
+
+      echo "Pushing to ADO..."
+      git config --global http.extraheader "AUTHORIZATION: bearer $(System.AccessToken)"
+      git remote add ado "${{ parameters.targetRepo }}"
+      git push ado --mirror
+    displayName: "Mirror ${{ parameters.repoName}}"
+    env:
+      GITHUB_PAT: $(GITHUB_PAT)
+      SYSTEM_ACCESSTOKEN: $(System.AccessToken)
+      
