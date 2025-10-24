@@ -1,8 +1,12 @@
+
+namespace: default
+createNamespace: true
+
 replicaCount: 1
 
 image:
-  repository: nginx
-  tag: stable
+  repository: ""  # override per app
+  tag: ""  # override per app
   pullPolicy: IfNotPresent
 
 resources:

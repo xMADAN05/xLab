@@ -1,0 +1,68 @@
+namespace: chatbot-dev
+replicaCount: 2
+
+image:
+  repository: madan05/chatbot-backend
+  tag: latest
+  pullPolicy: Always
+
+containerPorts:
+  - name: http
+    containerPort: 8000
+
+env:
+  - name: REDIS_HOST
+    value: redis
+  - name: REDIS_PORT
+    value: "6379"
+  - name: ENVIRONMENT
+    value: development
+  - name: LOG_LEVEL
+    value: debug
+
+resources:
+  limits:
+    cpu: "1000m"
+    memory: "1Gi"
+  requests:
+    cpu: "500m"
+    memory: "512Mi"
+
+readinessProbe:
+  enabled: true
+  path: /ready
+  port: http
+  initialDelaySeconds: 10
+  periodSeconds: 10
+
+livenessProbe:
+  enabled: true
+  path: /health
+  port: http
+  initialDelaySeconds: 20
+  periodSeconds: 20
+
+ingress:
+  enabled: true
+  host: chatbot-dev.example.com
+  path: /
+  pathType: Prefix
+  ingressClassName: kong
+  annotations:
+    konghq.com/strip-path: "true"
+    konghq.com/https-redirect-status-code: "308"
+  tls: []
+
+config:
+  enabled: true
+  data:
+    app.properties: |
+      env=development
+      log_level=debug
+      redis_host=redis
+      redis_port=6379
+    application.yaml: |
+      server:
+        port: 8000
+      logging:
+        level: DEBUG

@@ -6,7 +6,9 @@ namespace: chatbot
 resources:
   - deployment.yaml
   - service.yaml
+  # - namespace.yaml
 
-commonLabels:
-  app: chatbot-backend
-  managed-by: argocd
+labels:
+  - pairs:
+      app: chatbot-backend
+      managed-by: argocd

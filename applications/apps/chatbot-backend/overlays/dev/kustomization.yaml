@@ -3,12 +3,27 @@ kind: Kustomization
 
 namespace: chatbot-dev
 
-bases:
+resources:
   - ../../base
 
 namePrefix: dev-
 nameSuffix: -v1
 
-commonLabels:
-  environment: dev
+labels:
+  - pairs:
+      environment: dev
 
+# patches:
+  # - path: deployment-patch.yaml
+  # - path: replica-sets.yaml
+
+helmGlobals:
+  chartHome:  F:/AVIVA/xLab/applications/charts 
+  # ../../../charts
+  
+helmCharts:
+  - name: app-chart
+    releaseName: chatbot-backend
+    namespace: chatbot-dev
+    valuesFile: config-dev.yaml
+    version: 0.1.0

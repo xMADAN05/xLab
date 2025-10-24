@@ -1,0 +1,29 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: ngnix-dev
+
+resources:
+  - ../../base
+
+namePrefix: dev-
+nameSuffix: -v1
+
+labels:
+  - pairs:
+      environment: dev
+
+# patches:
+  # - path: deployment-patch.yaml
+  # - path: replica-sets.yaml
+
+helmGlobals:
+  chartHome:  F:/AVIVA/xLab/applications/charts 
+  # ../../../charts
+  
+helmCharts:
+  - name: app-chart
+    releaseName: ngnix
+    namespace: ngnix-dev
+    valuesFile: config-dev.yaml
+    version: 0.1.0

@@ -1,0 +1,26 @@
+# applications/apps/chatbot-backend/argocd/app-dev.yaml
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: chatbot-backend-dev
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  
+  source:
+    repoURL: 'https://github.com/xMADAN05/xLab.git'
+    targetRevision: HEAD
+    path: applications/apps/chatbot-backend/overlays/dev
+  
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: chatbot-dev
+  
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=true
+    automated:
+      prune: true
+      selfHeal: true

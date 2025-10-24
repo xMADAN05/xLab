@@ -6,9 +6,9 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: 'https://github.com/xMADAN05/gitops-homelab.git'
+    repoURL: 'https://github.com/xMADAN05/xLab.git'
     targetRevision: HEAD
-    path: appsets
+    path: control/appsets
   destination:
     server:  https://kubernetes.default.svc
     namespace: argocd

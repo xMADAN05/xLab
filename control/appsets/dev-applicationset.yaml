@@ -4,30 +4,31 @@ metadata:
   name: dev-applicationset
   namespace: argocd
 spec:
-  goTemplate: true
-  goTemplateOptions: ["missingkey=error"]
   generators:
   - git:
-    repoURL: 'https://github.com/xMADAN05/gitops-homelab.git'
-    revision: HEAD
-    directories:
-    - path: apps/*/dev
+      repoURL: 'https://github.com/xMADAN05/xLab.git'
+      revision: HEAD
+      directories:
+      - path: applications/apps/*/overlays/dev
+      requeueAfterSeconds: 300 # wait 5 min before scans
   template:
     metadata:
-      name: '{{index .path.segments 1}}'
-      spec:
-        project: default
-        # Application manifest source
-        source:
-          repoURL: 'https://github.com/xMADAN05/gitops-homelab.git'
-          targetRevision: HEAD
-          path: '{{.path.path}}'
-        destination:
-          server: https://kubernetes.default.svc
-          namespace: 'argocd'
-        syncPolicy:
-          syncOptions:
-            - CreateNamespace=true
-          automated:
-            prune: true
-            selfHeal: true
+      name: '{{ index (split .path.path "/") 2 }}-dev'
+    spec:
+      project: default
+      # Application manifest source
+      source:
+        repoURL: 'https://github.com/xMADAN05/xLab.git'
+        targetRevision: HEAD
+        path: '{{ .path.path }}'
+        kustomize:
+          enableHelm: true
+      destination:
+        server: https://kubernetes.default.svc
+        # namespace: 'apps-dev' # Namespace defined in kustomization 
+      syncPolicy:
+        syncOptions:
+          - CreateNamespace=true
+        automated:
+          prune: true
+          selfHeal: true
